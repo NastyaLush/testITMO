@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: notifier
+
+notifier-file:
+  path: ${NOTIFIER_FILE_PATH:notifications.log}
+server:
+  port: ${NOTIFIER_PORT:8090}

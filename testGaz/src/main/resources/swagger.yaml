@@ -1,0 +1,449 @@
+openapi: 3.0.1
+info:
+  title: Appointment Management API
+  version: "1.0"
+
+tags:
+  - name: "Appointment Management"
+    description: "API для управления записями на приём к врачам"
+  - name: "Doctor Management"
+    description: "API для управления врачами"
+  - name: "Patient Management"
+    description: "API для управления пациентами"
+
+paths:
+  /api/v1/appointment:
+    post:
+      tags: ["Appointment Management"]
+      summary: "Создать новую запись"
+      operationId: "createAppointment"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AppointmentCreateDto"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppointmentResponseDto"
+
+  /api/v1/appointment/doctor/{doctorId}:
+    get:
+      tags: ["Appointment Management"]
+      summary: "Получить записи по ID врача"
+      operationId: "getAppointmentsByDoctorId"
+      parameters:
+        - name: "doctorId"
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AppointmentResponseDto"
+
+  /api/v1/appointment/patient/{patientId}:
+    get:
+      tags: ["Appointment Management"]
+      summary: "Получить записи по ID пациента"
+      operationId: "getAppointmentsByPatientId"
+      parameters:
+        - name: "patientId"
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AppointmentResponseDto"
+
+  /api/v1/appointment/{id}:
+    get:
+      tags: ["Appointment Management"]
+      summary: "Получить запись по ID"
+      operationId: "getAppointmentById"
+      parameters:
+        - name: "id"
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppointmentResponseDto"
+        "404":
+          description: "Запись не найдена"
+
+    put:
+      tags: ["Appointment Management"]
+      summary: "Обновить запись"
+      operationId: "updateAppointment"
+      parameters:
+        - name: "id"
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AppointmentCreateDto"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppointmentResponseDto"
+        "404":
+          description: "Запись не найдена"
+
+    delete:
+      tags: ["Appointment Management"]
+      summary: "Удалить запись"
+      operationId: "deleteAppointment"
+      parameters:
+        - name: "id"
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "204":
+          description: "Запись успешно удалена"
+        "404":
+          description: "Запись не найдена"
+
+  /api/v1/doctor:
+    get:
+      tags: ["Doctor Management"]
+      summary: "Получить список всех врачей"
+      operationId: "getAllDoctors"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DoctorResponseDto"
+
+    post:
+      tags: ["Doctor Management"]
+      summary: "Создать нового врача"
+      operationId: "createDoctor"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DoctorCreateDto"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DoctorResponseDto"
+
+  /api/v1/doctor/{id}:
+    get:
+      tags: ["Doctor Management"]
+      summary: "Получить врача по ID"
+      operationId: "getDoctorById"
+      parameters:
+        - name: "id"
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DoctorResponseDto"
+        "404":
+          description: "Врач не найден"
+
+    put:
+      tags: ["Doctor Management"]
+      summary: "Обновить информацию о враче"
+      operationId: "updateDoctor"
+      parameters:
+        - name: "id"
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DoctorCreateDto"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DoctorResponseDto"
+        "404":
+          description: "Врач не найден"
+
+    delete:
+      tags: ["Doctor Management"]
+      summary: "Удалить врача"
+      operationId: "deleteDoctor"
+      parameters:
+        - name: "id"
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "204":
+          description: "Врач успешно удалён"
+        "404":
+          description: "Врач не найден"
+
+  /api/v1/patient:
+    get:
+      tags: ["Patient Management"]
+      summary: "Получить список всех пациентов"
+      operationId: "getAllPatients"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PatientResponseDto"
+
+    post:
+      tags: ["Patient Management"]
+      summary: "Создать нового пациента"
+      operationId: "createPatient"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatientCreateDto"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PatientResponseDto"
+
+  /api/v1/patient/{id}:
+    get:
+      tags: ["Patient Management"]
+      summary: "Получить пациента по ID"
+      operationId: "getPatientById"
+      parameters:
+        - name: "id"
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PatientResponseDto"
+        "404":
+          description: "Пациент не найден"
+
+    put:
+      tags: ["Patient Management"]
+      summary: "Обновить информацию о пациенте"
+      operationId: "updatePatient"
+      parameters:
+        - name: "id"
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatientCreateDto"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PatientResponseDto"
+        "404":
+          description: "Пациент не найден"
+
+    delete:
+      tags: ["Patient Management"]
+      summary: "Удалить пациента"
+      operationId: "deletePatient"
+      parameters:
+        - name: "id"
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "204":
+          description: "Пациент успешно удалён"
+        "404":
+          description: "Пациент не найден"
+
+components:
+  schemas:
+    AppointmentCreateDto:
+      type: object
+      required:
+        - doctor
+        - startedAt
+        - finishedAt
+        - status
+      properties:
+        doctor:
+          type: integer
+          format: int64
+        patient:
+          type: integer
+          format: int64
+        startedAt:
+          type: string
+          format: date-time
+        finishedAt:
+          type: string
+          format: date-time
+        status:
+          $ref: "#/components/schemas/Status"
+
+    AppointmentResponseDto:
+      type: object
+      required:
+        - id
+        - doctor
+        - startedAt
+        - finishedAt
+        - status
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: "a1b2c3d4-e5f6-7890-g1h2-i3j4k5l6m7n8"
+        doctor:
+          type: integer
+          format: int64
+        patient:
+          type: integer
+          format: int64
+        startedAt:
+          type: string
+          format: date-time
+        finishedAt:
+          type: string
+          format: date-time
+        status:
+          $ref: "#/components/schemas/Status"
+
+    Status:
+      type: string
+      enum: ["FREE", "BOOKED"]
+
+    DoctorCreateDto:
+      type: object
+      required: ["name"]
+      properties:
+        name:
+          type: string
+
+    DoctorResponseDto:
+      type: object
+      required: ["id", "name"]
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: "a1b2c3d4-e5f6-7890-g1h2-i3j4k5l6m7n8"
+        name:
+          type: string
+
+    PatientCreateDto:
+      type: object
+      required: ["name", "email"]
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+
+    PatientResponseDto:
+      type: object
+      required: ["id", "name", "email", "createdAt"]
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: "a1b2c3d4-e5f6-7890-g1h2-i3j4k5l6m7n8"
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        createdAt:
+          type: string
+          format: date-time
+
+    ErrorMessage:
+      type: object
+      properties:
+        message:
+          type: string
+          format: message

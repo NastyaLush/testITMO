@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-tables
+      author: a.s.lushnikova
+      changes:
+        - sqlFile:
+            path: 001-create-tables.sql
+            relativeToChangelogFile: true

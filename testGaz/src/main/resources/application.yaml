@@ -1,0 +1,24 @@
+spring:
+  cloud:
+    openfeign:
+      client:
+        config:
+          notifier:
+            url: http://localhost:8089
+            connect-timeout: 1000 # 1s
+            read-timeout: 5000 # 5s
+  application:
+    name: ${APP_NAME:HospitalManagementSystem}
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5430/postgres}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: ${DB_DRIVER:org.postgresql.Driver}
+
+  liquibase:
+    enabled: ${LIQUIBASE_ENABLED:true}
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
+notifier:
+  cron: "0 * * * * ?"

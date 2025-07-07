@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    openfeign:
+      client:
+        config:
+          notifier:
+            url: http://localhost:${wiremock.server.port}
+notifier:
+  cron:
+    "-"
